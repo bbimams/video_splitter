@@ -293,8 +293,7 @@ def split_video(input_path, segment_duration_minutes, convert_to_h264, output_di
             "-t", str(seg_duration),
         ]
         if convert_to_h264:
-            cmd += ["-c:v", "libx264", "-crf", "23", "-preset", "medium",
-                    "-c:a", "aac", "-b:a", "192k"]
+            cmd += ["-c:v", "h264_nvenc", "-preset", "p5", "-cq", "23","-c:a", "aac", "-b:a", "192k"]
         else:
             cmd += ["-c:v", "copy", "-c:a", "copy"]
         cmd.append(out_path)
