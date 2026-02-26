@@ -1,7 +1,7 @@
 # Video Splitter
 
-Interactive Python CLI tool to split long videos into smaller clips with FFmpeg.
-The script can detect AV1 videos and optionally convert them to H.264 for better playback compatibility.
+Python tool to split long videos into smaller clips with FFmpeg.
+Supports both an interactive CLI and a tkinter GUI. The tool can detect AV1 videos and optionally convert them to H.264 for better playback compatibility.
 
 ## Features
 
@@ -10,13 +10,12 @@ The script can detect AV1 videos and optionally convert them to H.264 for better
 - Optional AV1 to H.264 conversion during split
 - Auto-generate detailed `README.txt` in the output folder
 - Show clip summary (duration, resolution, FPS, codec, file size)
+- **GUI mode** with file browser, video info panel, progress bar, and cancel support
 
 ## Requirements
 
 - Python 3.8+
 - FFmpeg and FFprobe installed and available in `PATH`
-
-You can verify your setup with:
 
 ```bash
 ffmpeg -version
@@ -25,7 +24,9 @@ ffprobe -version
 
 ## Usage
 
-Run the script:
+### CLI Mode
+
+Run the interactive CLI:
 
 ```bash
 python main.py
@@ -38,6 +39,23 @@ You will be prompted to:
 3. Confirm AV1 to H.264 conversion (only shown for AV1 sources)
 4. Choose output directory (or use default)
 5. Confirm and start processing
+
+### GUI Mode
+
+Launch the graphical interface:
+
+```bash
+python main.py --gui
+```
+
+The GUI provides:
+
+- File browser to select input video
+- Video info panel (codec, duration, resolution, FPS, bitrate, audio, file size)
+- Segment duration setting with AV1 conversion option
+- Output directory picker
+- Progress bar with log output
+- Cancel button to stop mid-split
 
 ## Output
 
@@ -56,13 +74,15 @@ Default output folder:
 
 ## Project Structure
 
-- `main.py` - interactive splitter script
+- `main.py` - entry point (CLI and `--gui` flag)
+- `core.py` - shared logic (ffmpeg helpers, splitting, progress callbacks)
+- `gui.py` - tkinter GUI
 
 ## Notes
 
 - If AV1 conversion is disabled, the script uses stream copy (`-c:v copy -c:a copy`) for faster processing.
-- If conversion is enabled, video is encoded with `libx264` and audio with AAC.
-- CLI prompts are currently in Indonesian.
+- If conversion is enabled, video is encoded with `h264_nvenc` (NVIDIA GPU) and audio with AAC.
+- The GUI requires no extra dependencies — it uses Python's built-in `tkinter`.
 
 ## Troubleshooting
 
